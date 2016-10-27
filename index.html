@@ -67,6 +67,9 @@
     ////////////////////////////////////////////////////////////
     //////////////////////// Set-up ////////////////////////////
     ////////////////////////////////////////////////////////////
+    // this is to update the svg (a random str)
+    var unicodeStr = '1lio%dac';
+
     var billedVersion = false;
     // Scatterplot
     var margin = {left: 30, top: 20, right: 20, bottom: 20},
@@ -77,11 +80,19 @@
       maxDistanceFromPoint = 50,
       current_month,
       current_taskarea;
-
-    var svg = d3.select("#chart")
-          .append("svg")
-          .attr("width", (width + margin.left + margin.right))
-          .attr("height", (height + margin.top + margin.bottom));
+      const chart = d3.select('#chart');
+      var svg = chart.selectAll('svg')
+        .data([unicodeStr], String);
+      // create svg
+      svg.enter()
+        .append('svg')
+        .attr('width', (width + margin.left + margin.right))
+        .attr('height', (height + margin.top + margin.bottom));
+      // update
+      svg.attr('width', (width + margin.left + margin.right))
+        .attr('height', (height + margin.top + margin.bottom));
+      // remove
+      svg.exit().remove();
 
     var wrapper = svg.append("g")
           .attr("class", "saxWrapper")
