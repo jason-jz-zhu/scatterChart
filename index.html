@@ -15,137 +15,50 @@
 		  color: #525252;
 		  text-align: center;
 		}
-
-		html, body {
-			width:auto;
-			height:auto;
-		}
     .axis line,
     .axis text {
-      /*display: none;*/
+      display: none;
     }
 		.axis path {
 			fill: none;
 			stroke: #B3B3B3;
-			shape-rendering: crispEdges;
+			/*shape-rendering: crispEdges;*/
 		}
 		.axis text {
 			font-size: 10px;
 			fill: #6B6B6B;
 		}
 
-		.popover {
-			pointer-events: none;
-		}
-
-		.legendTitle {
-			fill: #1A1A1A;
-			color: #1A1A1A;
-			text-anchor: middle;
-			font-size: 10px;
-		}
-
-		.legendText {
-			fill: #949494;
-			text-anchor: start;
-			font-size: 9px;
-		}
-
-    .label {
+    /*.label {
       fill: #777;
-    }
+    }*/
 
-    .month.label {
+    /*.month.label {
       font: 500 150px "Helvetica Neue";
       fill: #ddd;
-    }
+    }*/
 
-    .month.label.active {
+    /*.month.label.active {
       fill: #aaa;
-    }
-    /*.legend_circle {
-			stroke-width:1 !important;
-			stroke:#999 !important;
-			stroke-dasharray:2 2 !important;
-			fill:none !important;
-		}*/
-    .circle-wrapper {
+    }*/
+
+    /*.circle-wrapper {
       fill: none;
       pointer-events: all;
-    }
-		/*.legend_line {
-			stroke-width: 1 !important;
-			stroke: #D1D1D1 !important;
-			shape-rendering: crispEdges !important;
-		}*/
-
-		.legend_title {
-			fill: #1A1A1A !important;
-			color: #1A1A1A !important;
-			text-anchor: middle !important;
-			font-size: 10px !important;
-		}
-
-		/*.legend_text {
-			fill: #949494 !important;
-			text-anchor: start !important;
-			font-size: 9px !important;
-		}*/
-
-    .voronoi {
-      stroke: #2074A0;
-      fill: none;
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-		@media 		.legendCircle {
-    			stroke-width:1;
-    			stroke:#999;
-    			stroke-dasharray:2 2;
-    			fill:none;
-    		}
-
-    		.legendLine {
-    			stroke-width: 1;
-    			stroke: #D1D1D1;
-    			shape-rendering: crispEdges;
-    		}
-
-    		.legendTitle {
-    			fill: #1A1A1A;
-    			color: #1A1A1A;
-    			text-anchor: middle;
-    			font-size: 10px;
-    		}
-
-    		.legendText {
-    			fill: #949494;
-    			text-anchor: start;
-    			font-size: 9px;
-    		}(min-width: 500px) {
-		  .col-sm-3, .col-sm-9 {
-			float: left;
-		  }
-		  .col-sm-9 {
-			width: 75%;
-		  }
-		  .col-sm-3 {
-			width: 25%;
-		  }
-		}
-
+    }*/
   </style>
 </head>
 <body>
   <div>
-    <div id="drop_list_month">
-    </div>
-    <div id="drop_list_taskarea">
+    <div>
+      <span id="drop_list_month">
+      </span>
+      <span id="drop_list_taskarea">
+      </span>
     </div>
     <div id="chart">
     </div>
-</div>
+  </div>
   <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="scatterChart.js"></script>
   <script src="data_run_sum.js"></script>
@@ -233,12 +146,13 @@
 
     function higthlight(taskarea) {
       return getCorrMonth(current_month).map(function(d) {
-        if(d.TaskArea == taskarea) {
-          d.Higthlight = "Yes";
+        var result = Object.assign({}, d);
+        if(result.TaskArea == taskarea) {
+          result.Higthlight = "Yes";
         } else {
-          d.Higthlight = "No";
+          result.Higthlight = "No";
         }
-        return d;
+        return result;
       })
     }
     ////////////////////////////////////////////////////////////
@@ -297,7 +211,9 @@
       .hightlightScale(hightlightScale)
 
     // do the animation
-    var month = 0;
+    scatterKey.getData(getCorrMonth(monthArray[0]));
+    wrapper.call(scatterKey);
+    var month = 1;
     function loop(month) {
       d3.timer(function() {
         current_month = monthArray[month];

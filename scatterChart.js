@@ -128,10 +128,14 @@ var scatterChart = function() {
         return _hightlight_scale(_basic_helper.higthlight(d));
       })
       .style("fill", function(d) { return _color_scale(_basic_helper.color(d)); })
+      .on("mouseover", _removeTooltip)
+      .on("mouseout", _showTooltip)
       .transition()
       .duration(2000)
       .call(_circlePosition)
-      .sort(_basic_helper.order);
+      .sort(_basic_helper.order)
+
+
 
     // append data to text
     var currentText = _circle_group.selectAll("text")
@@ -171,6 +175,51 @@ var scatterChart = function() {
       .attr("x", function(d) { return _x_scale(_basic_helper.x(d)); })
       .attr("y", function(d) { return _y_scale(_basic_helper.y(d)); });
   }
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  /////////////////// Hover functions of the circles ////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+
+  //Hide the tooltip when the mouse moves away
+  function _removeTooltip (d) {
+
+  	//Save the chosen circle (so not the voronoi)
+  	var element = d3.select(this);
+    console.log("_removeTooltip");
+  	// //Fade out the bubble again
+  	// element.style("opacity", opacityCircles);
+    //
+  	// //Hide tooltip
+  	// d3.select('.popover').each(function(d) {
+  	// 	d.remove();
+  	// });
+
+  }//function removeTooltip
+
+  //Show the tooltip on the hovered over slice
+  function _showTooltip (d) {
+    var element = d3.select(this);
+    console.log("_showTooltip");
+  	//Save the chosen circle (so not the voronoi)
+  	// var element = d3.selectAll(".countries."+d.CountryCode);
+    //
+  	// //Define and show the tooltip
+  	// $(element).popover({
+  	// 	placement: 'auto top',
+  	// 	container: '#chart',
+  	// 	trigger: 'manual',
+  	// 	html : true,
+  	// 	content: function() {
+  	// 		return "<span style='font-size: 11px; text-align: center;'>" + d.Country + "</span>"; }
+  	// });
+  	// $(element).popover('show');
+
+  	//Make chosen circle more visible
+  	element.style("opacity", 1);
+
+  }//function showTooltip
+
 
   _scatterChart.setBasicHelper = function(_) {
     if (!arguments.length) { return _basic_helper; }
